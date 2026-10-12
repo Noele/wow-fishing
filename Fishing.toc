@@ -1,0 +1,7 @@
+## Interface: 120100
+## Title: Fishing
+## Notes: Fishing unbound
+## Version: 1.0.0
+
+Interface.lua
+Fishing.lua
