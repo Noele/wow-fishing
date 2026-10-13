@@ -1,11 +1,11 @@
-Fishing.LootFrame = CreateFrame("Frame")
-Fishing.LootFrame:RegisterEvent("LOOT_OPENED")
+EndlessAngler.LootFrame = CreateFrame("Frame")
+EndlessAngler.LootFrame:RegisterEvent("LOOT_OPENED")
 
 local JournalLoot = CreateFrame("Frame")
 JournalLoot:RegisterEvent("LOOT_OPENED")
 
 
-FishingPlayerData = FishingPlayerData or {
+EndlessAnglerPlayerData = EndlessAnglerPlayerData or {
 	["xp"] = 0,
 	["catch_count"] = 0,
 }
@@ -41,22 +41,22 @@ local RANKS = {
     { 400, "Ascended Angler",   "ffff3399" },
 }
 
-function Fishing.XPToNext(level)
+function EndlessAngler.XPToNext(level)
     return 100 + 25 * level + math.floor(level ^ 1.5)
 end
 
-function Fishing.LevelFromXP(totalXP)
+function EndlessAngler.LevelFromXP(totalXP)
     local level, remaining = 1, totalXP
-    local need = Fishing.XPToNext(level)
+    local need = EndlessAngler.XPToNext(level)
     while remaining >= need do
         remaining = remaining - need
         level = level + 1
-        need = Fishing.XPToNext(level)
+        need = EndlessAngler.XPToNext(level)
     end
     return level, remaining, need
 end
 
-function Fishing.RankForLevel(level)
+function EndlessAngler.RankForLevel(level)
     local current, nextRank = RANKS[1], nil
     for i, r in ipairs(RANKS) do
         if level >= r[1] then
@@ -67,22 +67,29 @@ function Fishing.RankForLevel(level)
     return current, nextRank
 end
 
-function Fishing.GetPlayerData()
+function EndlessAngler.GetPlayerData()
 	data = {}
-	data.xp = FishingPlayerData.xp
+	data.xp = EndlessAnglerPlayerData.xp
 	data.name, data.realm = UnitName("player")
-	data.catch_count = FishingPlayerData.catch_count
+	data.catch_count = EndlessAnglerPlayerData.catch_count
 	return data
 end
 
-function Fishing.RankString(level)
-    local r = Fishing.RankForLevel(level)
+function EndlessAngler.RankString(level)
+    local r = EndlessAngler.RankForLevel(level)
     return "|c" .. r[3] .. r[2] .. "|r"
 end
 
 append = ""
 
-Fishing.LootFrame:SetScript("OnEvent", function()
+local function GainExperience(exp)
+	if EndlessAngler.XPToNext(EndlessAngler.LevelFromXP(EndlessAnglerPlayerData.xp)) - exp <= 0 then
+		PlaySound(888)
+	end
+	EndlessAnglerPlayerData.xp = EndlessAnglerPlayerData.xp + exp
+
+end
+EndlessAngler.LootFrame:SetScript("OnEvent", function()
 	if IsFishingLoot() then
 		local ok, number_of_items = pcall(GetNumLootItems)
 		if ok then
@@ -90,12 +97,13 @@ Fishing.LootFrame:SetScript("OnEvent", function()
 				local ok, lootIcon, lootName, lootQuantity, currencyID, lootQuality, locked, isQuestItem, questID, isActive = pcall(GetLootSlotInfo, i)
 				if ok then
 					local _, _, _, hex = GetItemQualityColor(lootQuality)
+					if ITEM_QUALITY[lootQuality].Quality == "Poor" then return end
 
-					FishingPlayerData.xp = FishingPlayerData.xp + BASE_EXP + ITEM_QUALITY[lootQuality].Experience
-					-- print("[Fishing] " .. ITEM_QUALITY[lootQuality].Quality ..  " Catch |c" .. hex .. lootName .. "|r +" .. BASE_EXP + ITEM_QUALITY[lootQuality].Experience .. " EXP")
-					Fishing.PopulateFrame(Fishing.GetPlayerData())
+					GainExperience(BASE_EXP + ITEM_QUALITY[lootQuality].Experience)
+					-- print("[EndlessAngler] " .. ITEM_QUALITY[lootQuality].Quality ..  " Catch |c" .. hex .. lootName .. "|r +" .. BASE_EXP + ITEM_QUALITY[lootQuality].Experience .. " EXP")
+					EndlessAngler.PopulateFrame(EndlessAngler.GetPlayerData())
 					append = " [+" .. BASE_EXP + ITEM_QUALITY[lootQuality].Experience .." EXP]"
-					FishingPlayerData.catch_count = FishingPlayerData.catch_count + 1
+					EndlessAnglerPlayerData.catch_count = EndlessAnglerPlayerData.catch_count + 1
 				end
 			end
 		end
@@ -110,14 +118,14 @@ end
 
 ChatFrame_AddMessageEventFilter("CHAT_MSG_LOOT", AppendLootText)
 
-SLASH_FISHING1 = "/fishing"
-SlashCmdList["FISHING"] = function(msg)
-	Fishing.PopulateFrame(Fishing.GetPlayerData())
-	Fishing.UIFrame:Show()
+SLASH_ENDLESSANGLER1 = "/ea"
+SlashCmdList["ENDLESSANGLER"] = function(msg)
+	EndlessAngler.PopulateFrame(EndlessAngler.GetPlayerData())
+	EndlessAngler.UIFrame:Show()
 end
 
 local ITEM_IDS = {}
-for _, section in ipairs(Fishing.FishList) do
+for _, section in ipairs(EndlessAngler.FishList) do
     for _, fish in ipairs(section.fish) do
         ITEM_IDS[fish[1]] = true
     end
@@ -127,7 +135,7 @@ end
 JournalLoot:SetScript("OnEvent", function()
     if not IsFishingLoot() then return end
 
-    FishingPlayerData.journal = FishingPlayerData.journal or {}
+    EndlessAnglerPlayerData.journal = EndlessAnglerPlayerData.journal or {}
 
     for i = 1, GetNumLootItems() do
         local link = GetLootSlotLink(i)
@@ -135,11 +143,11 @@ JournalLoot:SetScript("OnEvent", function()
 
         if itemID and ITEM_IDS[itemID] then
             local _, _, quantity = GetLootSlotInfo(i)
-            FishingPlayerData.journal[itemID] = (FishingPlayerData.journal[itemID] or 0) + (quantity or 1)
+            EndlessAnglerPlayerData.journal[itemID] = (EndlessAnglerPlayerData.journal[itemID] or 0) + (quantity or 1)
         end
     end
 
-    if Fishing.JournalFrame:IsShown() then
-        Fishing.PopulateJournal()
+    if EndlessAngler.JournalFrame:IsShown() then
+        EndlessAngler.PopulateJournal()
     end
 end)

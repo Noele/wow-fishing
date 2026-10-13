@@ -1,0 +1,15 @@
+## Interface: 120100
+## Title: EndlessAngler
+## Notes: EndlessAngler
+## Version: 1.0.0
+## SavedVariables: EndlessAnglerPlayerData
+
+
+JournalData.lua
+
+Interface.lua
+Profile.lua
+Journal.lua
+Tabs.lua
+
+EndlessAngler.lua

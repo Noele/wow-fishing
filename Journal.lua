@@ -3,30 +3,30 @@ local CELL = ICON_SIZE + SPACING
 local HEADER_HEIGHT = 24
 local QUESTION_MARK = 134400
 
-Fishing.JournalFrame = CreateFrame("Frame", nil, Fishing.UIFrame)
-Fishing.JournalFrame:SetPoint("TOPLEFT", Fishing.UIFrame, "TOPLEFT", 10, -30)
-Fishing.JournalFrame:SetPoint("BOTTOMRIGHT", Fishing.UIFrame, "BOTTOMRIGHT", -10, 8)
-Fishing.JournalFrame:Hide()
+EndlessAngler.JournalFrame = CreateFrame("Frame", nil, EndlessAngler.UIFrame)
+EndlessAngler.JournalFrame:SetPoint("TOPLEFT", EndlessAngler.UIFrame, "TOPLEFT", 10, -30)
+EndlessAngler.JournalFrame:SetPoint("BOTTOMRIGHT", EndlessAngler.UIFrame, "BOTTOMRIGHT", -10, 8)
+EndlessAngler.JournalFrame:Hide()
 
-Fishing.JournalSummary = Fishing.JournalFrame:CreateFontString(nil, "OVERLAY", "GameFontNormal")
-Fishing.JournalSummary:SetPoint("TOPLEFT", Fishing.JournalFrame, "TOPLEFT", 6, -6)
+EndlessAngler.JournalSummary = EndlessAngler.JournalFrame:CreateFontString(nil, "OVERLAY", "GameFontNormal")
+EndlessAngler.JournalSummary:SetPoint("TOPLEFT", EndlessAngler.JournalFrame, "TOPLEFT", 6, -6)
 
-Fishing.JournalScroll = CreateFrame("ScrollFrame", "FishingJournalScroll", Fishing.JournalFrame, "UIPanelScrollFrameTemplate")
-Fishing.JournalScroll:SetPoint("TOPLEFT", Fishing.JournalFrame, "TOPLEFT", 0, -28)
-Fishing.JournalScroll:SetPoint("BOTTOMRIGHT", Fishing.JournalFrame, "BOTTOMRIGHT", 0, 4)
+EndlessAngler.JournalScroll = CreateFrame("ScrollFrame", "FishingJournalScroll", EndlessAngler.JournalFrame, "UIPanelScrollFrameTemplate")
+EndlessAngler.JournalScroll:SetPoint("TOPLEFT", EndlessAngler.JournalFrame, "TOPLEFT", 0, -28)
+EndlessAngler.JournalScroll:SetPoint("BOTTOMRIGHT", EndlessAngler.JournalFrame, "BOTTOMRIGHT", 0, 4)
 
 
-Fishing.JournalScroll:SetClipsChildren(true)
+EndlessAngler.JournalScroll:SetClipsChildren(true)
 
-local scrollBar = Fishing.JournalScroll.ScrollBar
+local scrollBar = EndlessAngler.JournalScroll.ScrollBar
 scrollBar:ClearAllPoints()
-scrollBar:SetPoint("TOPRIGHT", Fishing.JournalScroll, "TOPRIGHT", -4, -18)
-scrollBar:SetPoint("BOTTOMRIGHT", Fishing.JournalScroll, "BOTTOMRIGHT", -4, 18)
+scrollBar:SetPoint("TOPRIGHT", EndlessAngler.JournalScroll, "TOPRIGHT", -4, -18)
+scrollBar:SetPoint("BOTTOMRIGHT", EndlessAngler.JournalScroll, "BOTTOMRIGHT", -4, 18)
 
-local scrollChild = CreateFrame("Frame", nil, Fishing.JournalScroll)
+local scrollChild = CreateFrame("Frame", nil, EndlessAngler.JournalScroll)
 scrollChild:SetSize(16 + COLUMNS * CELL, 1)
-scrollChild:SetPoint("TOPLEFT", Fishing.JournalScroll, "TOPLEFT", 0, 0)
-Fishing.JournalScroll:SetScrollChild(scrollChild)
+scrollChild:SetPoint("TOPLEFT", EndlessAngler.JournalScroll, "TOPLEFT", 0, 0)
+EndlessAngler.JournalScroll:SetScrollChild(scrollChild)
 
 local function reversedipairsiter(t, i)
     i = i - 1
@@ -42,7 +42,7 @@ local sections = {}
 local function BuildJournal()
     local y = 8
 
-    for _, section in reversedipairs(Fishing.FishList) do
+    for _, section in reversedipairs(EndlessAngler.FishList) do
         local header = scrollChild:CreateFontString(nil, "OVERLAY", "GameFontNormal")
         header:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", 8, -y)
         y = y + HEADER_HEIGHT
@@ -80,10 +80,10 @@ local function BuildJournal()
     scrollChild:SetHeight(y)
 end
 
-function Fishing.PopulateJournal()
+function EndlessAngler.PopulateJournal()
     if #sections == 0 then BuildJournal() end
 
-    local caught = FishingPlayerData.journal or {}
+    local caught = EndlessAnglerPlayerData.journal or {}
     local total, discovered = 0, 0
 
     for _, section in ipairs(sections) do
@@ -103,5 +103,5 @@ function Fishing.PopulateJournal()
         discovered = discovered + sectionDiscovered
     end
 
-    Fishing.JournalSummary:SetText("Discovered: " .. discovered .. " / " .. total)
+    EndlessAngler.JournalSummary:SetText("Discovered: " .. discovered .. " / " .. total)
 end

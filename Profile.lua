@@ -1,57 +1,57 @@
 
-Fishing.ProfileFrame = CreateFrame("Frame", nil, Fishing.UIFrame)
-Fishing.ProfileFrame:SetPoint("TOPLEFT", Fishing.UIFrame, "TOPLEFT", 0, 0)
-Fishing.ProfileFrame:SetPoint("BOTTOMRIGHT", Fishing.UIFrame, "BOTTOMRIGHT", 0, 0)
-Fishing.ProfileFrame:Hide()
+EndlessAngler.ProfileFrame = CreateFrame("Frame", nil, EndlessAngler.UIFrame)
+EndlessAngler.ProfileFrame:SetPoint("TOPLEFT", EndlessAngler.UIFrame, "TOPLEFT", 0, 0)
+EndlessAngler.ProfileFrame:SetPoint("BOTTOMRIGHT", EndlessAngler.UIFrame, "BOTTOMRIGHT", 0, 0)
+EndlessAngler.ProfileFrame:Hide()
 
-Fishing.ProfileFrame.nameText = Fishing.ProfileFrame:CreateFontString(nil,"OVERLAY","GameFontNormalLarge")
-Fishing.ProfileFrame.nameText:SetPoint("TOPLEFT", Fishing.ProfileFrame, "TOPLEFT", 20, -40)
+EndlessAngler.ProfileFrame.nameText = EndlessAngler.ProfileFrame:CreateFontString(nil,"OVERLAY","GameFontNormalLarge")
+EndlessAngler.ProfileFrame.nameText:SetPoint("TOPLEFT", EndlessAngler.ProfileFrame, "TOPLEFT", 20, -40)
 
-Fishing.ProfileFrame.levelText = Fishing.ProfileFrame:CreateFontString(nil,"OVERLAY","GameFontHighlightLarge")
-Fishing.ProfileFrame.levelText:SetPoint("TOPLEFT", Fishing.ProfileFrame, "TOPLEFT", 20, -65)
+EndlessAngler.ProfileFrame.levelText = EndlessAngler.ProfileFrame:CreateFontString(nil,"OVERLAY","GameFontHighlightLarge")
+EndlessAngler.ProfileFrame.levelText:SetPoint("TOPLEFT", EndlessAngler.ProfileFrame, "TOPLEFT", 20, -65)
 
-Fishing.ProfileFrame.rankText = Fishing.ProfileFrame:CreateFontString(nil,"OVERLAY","GameFontNormal")
-Fishing.ProfileFrame.rankText:SetPoint("TOPLEFT", Fishing.ProfileFrame, "TOPLEFT", 20, -87)
+EndlessAngler.ProfileFrame.rankText = EndlessAngler.ProfileFrame:CreateFontString(nil,"OVERLAY","GameFontNormal")
+EndlessAngler.ProfileFrame.rankText:SetPoint("TOPLEFT", EndlessAngler.ProfileFrame, "TOPLEFT", 20, -87)
 
-Fishing.ProfileFrame.XPBar = CreateFrame("StatusBar","FishingXPBar",Fishing.ProfileFrame)
-Fishing.ProfileFrame.XPBar:SetSize(280, 18)
-Fishing.ProfileFrame.XPBar:SetPoint("TOPLEFT", Fishing.ProfileFrame, "TOPLEFT", 20, -115)
-Fishing.ProfileFrame.XPBar:SetStatusBarTexture("Interface\\TARGETINGFRAME\\UI-StatusBar")
+EndlessAngler.ProfileFrame.XPBar = CreateFrame("StatusBar","FishingXPBar",EndlessAngler.ProfileFrame)
+EndlessAngler.ProfileFrame.XPBar:SetSize(280, 18)
+EndlessAngler.ProfileFrame.XPBar:SetPoint("TOPLEFT", EndlessAngler.ProfileFrame, "TOPLEFT", 20, -115)
+EndlessAngler.ProfileFrame.XPBar:SetStatusBarTexture("Interface\\TARGETINGFRAME\\UI-StatusBar")
 
 -- Background behind the fill
-Fishing.ProfileFrame.XPBar.bg = Fishing.ProfileFrame.XPBar:CreateTexture(nil, "BACKGROUND")
-Fishing.ProfileFrame.XPBar.bg:SetAllPoints()
-Fishing.ProfileFrame.XPBar.bg:SetColorTexture(0, 0, 0, 0.5)
+EndlessAngler.ProfileFrame.XPBar.bg = EndlessAngler.ProfileFrame.XPBar:CreateTexture(nil, "BACKGROUND")
+EndlessAngler.ProfileFrame.XPBar.bg:SetAllPoints()
+EndlessAngler.ProfileFrame.XPBar.bg:SetColorTexture(0, 0, 0, 0.5)
 
 -- Set the fill colour
-Fishing.ProfileFrame.XPBar:SetStatusBarColor(0.1, 0.5, 0.9)
+EndlessAngler.ProfileFrame.XPBar:SetStatusBarColor(0.1, 0.5, 0.9)
 
-Fishing.ProfileFrame.XPBar.XPBarText = Fishing.ProfileFrame.XPBar:CreateFontString(nil, "OVERLAY","GameFontHighlightSmall")
-Fishing.ProfileFrame.XPBar.XPBarText:SetPoint("CENTER", Fishing.ProfileFrame.XPBar, "CENTER", 0, 0)
+EndlessAngler.ProfileFrame.XPBar.XPBarText = EndlessAngler.ProfileFrame.XPBar:CreateFontString(nil, "OVERLAY","GameFontHighlightSmall")
+EndlessAngler.ProfileFrame.XPBar.XPBarText:SetPoint("CENTER", EndlessAngler.ProfileFrame.XPBar, "CENTER", 0, 0)
 
-Fishing.ProfileFrame.catch_countText = Fishing.ProfileFrame:CreateFontString(nil,"OVERLAY","GameFontHighlight")
-Fishing.ProfileFrame.catch_countText:SetPoint("TOPLEFT", Fishing.ProfileFrame, "TOPLEFT", 20, -145)
+EndlessAngler.ProfileFrame.catch_countText = EndlessAngler.ProfileFrame:CreateFontString(nil,"OVERLAY","GameFontHighlight")
+EndlessAngler.ProfileFrame.catch_countText:SetPoint("TOPLEFT", EndlessAngler.ProfileFrame, "TOPLEFT", 20, -145)
 
-Fishing.ProfileFrame.nextRankText = Fishing.ProfileFrame:CreateFontString(nil,"OVERLAY","GameFontHighlight")
-Fishing.ProfileFrame.nextRankText:SetPoint("TOPLEFT", Fishing.ProfileFrame, "TOPLEFT", 20, -160)
+EndlessAngler.ProfileFrame.nextRankText = EndlessAngler.ProfileFrame:CreateFontString(nil,"OVERLAY","GameFontHighlight")
+EndlessAngler.ProfileFrame.nextRankText:SetPoint("TOPLEFT", EndlessAngler.ProfileFrame, "TOPLEFT", 20, -160)
 
 
-function Fishing.PopulateFrame(data)
-    Fishing.ProfileFrame.nameText:SetText(data.name)
-	local level, remaining, need = Fishing.LevelFromXP(data.xp)
-	local current_rank, next_rank = Fishing.RankForLevel(level)
+function EndlessAngler.PopulateFrame(data)
+    EndlessAngler.ProfileFrame.nameText:SetText(data.name)
+	local level, remaining, need = EndlessAngler.LevelFromXP(data.xp)
+	local current_rank, next_rank = EndlessAngler.RankForLevel(level)
 	local next_rank_level, next_rank_name = next_rank[1], next_rank[2]
-    Fishing.ProfileFrame.rankText:SetText("Rank: " .. Fishing.RankString(level))
+    EndlessAngler.ProfileFrame.rankText:SetText("Rank: " .. EndlessAngler.RankString(level))
 
-	Fishing.ProfileFrame.XPBar:SetMinMaxValues(0, need)
-	Fishing.ProfileFrame.XPBar:SetValue(remaining)
+	EndlessAngler.ProfileFrame.XPBar:SetMinMaxValues(0, need)
+	EndlessAngler.ProfileFrame.XPBar:SetValue(remaining)
 
-	Fishing.ProfileFrame.XPBar.XPBarText:SetText(remaining .. " / " .. need .. " XP")
+	EndlessAngler.ProfileFrame.XPBar.XPBarText:SetText(remaining .. " / " .. need .. " XP")
 
-	Fishing.ProfileFrame.levelText:SetText("Fishing Level " ..level)
+	EndlessAngler.ProfileFrame.levelText:SetText("Fishing Level " ..level)
 
-	Fishing.ProfileFrame.catch_countText:SetText("Total catches: " .. data.catch_count)
+	EndlessAngler.ProfileFrame.catch_countText:SetText("Total catches: " .. data.catch_count)
 
-	Fishing.ProfileFrame.nextRankText:SetText("Next rank: " .. next_rank_name .. " at level " .. next_rank_level)
+	EndlessAngler.ProfileFrame.nextRankText:SetText("Next rank: " .. next_rank_name .. " at level " .. next_rank_level)
 
 end

@@ -1,5 +1,5 @@
-Fishing = {}
-Fishing.FishList = {
+EndlessAngler = {}
+EndlessAngler.FishList = {
     {
         expansion = "Classic",
         fish = {
