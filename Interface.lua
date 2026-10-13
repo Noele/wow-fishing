@@ -1,6 +1,6 @@
 Fishing = {}
 
-Fishing.UIFrame = CreateFrame("Frame", "Fishing", UIParent, "BasicFrameTemplateWithInset")
+Fishing.UIFrame = CreateFrame("Frame", "FishingUIFrame", UIParent, "BasicFrameTemplateWithInset")
 Fishing.UIFrame:SetPoint("CENTER")
 Fishing.UIFrame:SetSize(320, 220)
 Fishing.UIFrame:Hide()
@@ -43,9 +43,18 @@ Fishing.XPBar:SetStatusBarColor(0.1, 0.5, 0.9)
 Fishing.XPBar.XPBarText = Fishing.XPBar:CreateFontString(nil, "OVERLAY","GameFontHighlightSmall")
 Fishing.XPBar.XPBarText:SetPoint("CENTER", Fishing.XPBar, "CENTER", 0, 0)
 
+Fishing.UIFrame.catch_countText = Fishing.UIFrame:CreateFontString(nil,"OVERLAY","GameFontHighlight")
+Fishing.UIFrame.catch_countText:SetPoint("TOPLEFT", Fishing.UIFrame, "TOPLEFT", 20, -145)
+
+Fishing.UIFrame.nextRankText = Fishing.UIFrame:CreateFontString(nil,"OVERLAY","GameFontHighlight")
+Fishing.UIFrame.nextRankText:SetPoint("TOPLEFT", Fishing.UIFrame, "TOPLEFT", 20, -160)
+
+
 function Fishing.PopulateFrame(data)
     Fishing.UIFrame.nameText:SetText(data.name)
 	local level, remaining, need = Fishing.LevelFromXP(data.xp)
+	local current_rank, next_rank = Fishing.RankForLevel(level)
+	local next_rank_level, next_rank_name = next_rank[1], next_rank[2]
     Fishing.UIFrame.rankText:SetText("Rank: " .. Fishing.RankString(level))
 
 	Fishing.XPBar:SetMinMaxValues(0, need)
@@ -54,4 +63,9 @@ function Fishing.PopulateFrame(data)
 	Fishing.XPBar.XPBarText:SetText(remaining .. " / " .. need .. " XP")
 
 	Fishing.UIFrame.levelText:SetText("Fishing Level " ..level)
+
+	Fishing.UIFrame.catch_countText:SetText("Total catches: " .. data.catch_count)
+
+	Fishing.UIFrame.nextRankText:SetText("Next rank: " .. next_rank_name .. " at level " .. next_rank_level)
+
 end
