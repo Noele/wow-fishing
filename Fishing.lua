@@ -1,7 +1,10 @@
 Fishing.LootFrame = CreateFrame("Frame")
 Fishing.LootFrame:RegisterEvent("LOOT_OPENED")
 
-PLAYER_XP = 0
+FishingPlayerData = FishingPlayerData or {
+	["xp"] = 0,
+	["catch_count"] = 0,
+}
 
 BASE_EXP = 15
 ITEM_QUALITY = {
@@ -62,9 +65,9 @@ end
 
 function Fishing.GetPlayerData()
 	data = {}
-	data.xp = PLAYER_XP
+	data.xp = FishingPlayerData.xp
 	data.name, data.realm = UnitName("player")
-
+	data.catch_count = FishingPlayerData.catch_count
 	return data
 end
 
@@ -84,10 +87,11 @@ Fishing.LootFrame:SetScript("OnEvent", function()
 				if ok then
 					local _, _, _, hex = GetItemQualityColor(lootQuality)
 
-					PLAYER_XP = PLAYER_XP + BASE_EXP + ITEM_QUALITY[lootQuality].Experience
+					FishingPlayerData.xp = FishingPlayerData.xp + BASE_EXP + ITEM_QUALITY[lootQuality].Experience
 					-- print("[Fishing] " .. ITEM_QUALITY[lootQuality].Quality ..  " Catch |c" .. hex .. lootName .. "|r +" .. BASE_EXP + ITEM_QUALITY[lootQuality].Experience .. " EXP")
 					Fishing.PopulateFrame(Fishing.GetPlayerData())
 					append = " [+" .. BASE_EXP + ITEM_QUALITY[lootQuality].Experience .." EXP]"
+					FishingPlayerData.catch_count = FishingPlayerData.catch_count + 1
 				end
 			end
 		end

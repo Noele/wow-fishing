@@ -2,6 +2,6 @@
 ## Title: Fishing
 ## Notes: Fishing unbound
 ## Version: 1.0.0
-
+## SavedVariables: FishingPlayerData
 Interface.lua
 Fishing.lua
