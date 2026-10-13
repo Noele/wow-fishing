@@ -1,6 +1,10 @@
 Fishing.LootFrame = CreateFrame("Frame")
 Fishing.LootFrame:RegisterEvent("LOOT_OPENED")
 
+local JournalLoot = CreateFrame("Frame")
+JournalLoot:RegisterEvent("LOOT_OPENED")
+
+
 FishingPlayerData = FishingPlayerData or {
 	["xp"] = 0,
 	["catch_count"] = 0,
@@ -111,3 +115,31 @@ SlashCmdList["FISHING"] = function(msg)
 	Fishing.PopulateFrame(Fishing.GetPlayerData())
 	Fishing.UIFrame:Show()
 end
+
+local ITEM_IDS = {}
+for _, section in ipairs(Fishing.FishList) do
+    for _, fish in ipairs(section.fish) do
+        ITEM_IDS[fish[1]] = true
+    end
+end
+
+-- Recording catches for journal
+JournalLoot:SetScript("OnEvent", function()
+    if not IsFishingLoot() then return end
+
+    FishingPlayerData.journal = FishingPlayerData.journal or {}
+
+    for i = 1, GetNumLootItems() do
+        local link = GetLootSlotLink(i)
+        local itemID = link and tonumber(link:match("item:(%d+)"))
+
+        if itemID and ITEM_IDS[itemID] then
+            local _, _, quantity = GetLootSlotInfo(i)
+            FishingPlayerData.journal[itemID] = (FishingPlayerData.journal[itemID] or 0) + (quantity or 1)
+        end
+    end
+
+    if Fishing.JournalFrame:IsShown() then
+        Fishing.PopulateJournal()
+    end
+end)

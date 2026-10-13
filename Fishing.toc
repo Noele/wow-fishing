@@ -3,5 +3,13 @@
 ## Notes: Fishing unbound
 ## Version: 1.0.0
 ## SavedVariables: FishingPlayerData
+
+
+JournalData.lua
+
 Interface.lua
+Profile.lua
+Journal.lua
+Tabs.lua
+
 Fishing.lua
