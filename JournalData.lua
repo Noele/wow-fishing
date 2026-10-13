@@ -128,6 +128,7 @@ Fishing.FishList = {
             { 274587, "Spotted Killifish" },
             { 274592, "Dirty Darter" },
             { 274590, "Sulfurous Sludgefish" },
+            { 274597, "Bulbous Benthos" },
         },
     },
 }
