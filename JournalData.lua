@@ -130,6 +130,7 @@ Fishing.FishList = {
             { 274590, "Sulfurous Sludgefish" },
             { 274597, "Bulbous Benthos" },
             { 274596, "Beached Asteroid" },
+            { 274595, "Pristine Polygon" },
         },
     },
 }
