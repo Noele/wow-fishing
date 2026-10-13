@@ -76,7 +76,7 @@ function Fishing.RankString(level)
     return "|c" .. r[3] .. r[2] .. "|r"
 end
 
-apppend = ""
+append = ""
 
 Fishing.LootFrame:SetScript("OnEvent", function()
 	if IsFishingLoot() then
