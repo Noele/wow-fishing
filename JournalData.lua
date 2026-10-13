@@ -129,6 +129,7 @@ Fishing.FishList = {
             { 274592, "Dirty Darter" },
             { 274590, "Sulfurous Sludgefish" },
             { 274597, "Bulbous Benthos" },
+            { 274596, "Beached Asteroid" },
         },
     },
 }
